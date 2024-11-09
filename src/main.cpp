@@ -2,6 +2,8 @@
 #include <GLFW/glfw3.h>
 #include <iostream>
 #include <string>
+
+#include "glfw_utils.hpp"
 #include "shader_utils.hpp"
 
 constexpr unsigned int WIDTH = 640;
@@ -25,6 +27,8 @@ int main() {
     }
 
     glfwMakeContextCurrent(window);
+    glfwSwapInterval(1);
+    glfwSetFramebufferSizeCallback(window, FramebufferSizeCallback);
 
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
         std::cerr << "Error: Failed to initialize GLAD" << std::endl;
@@ -64,12 +68,19 @@ int main() {
         LinkShaderProgram(vertexShaderPath, fragmentShaderPath);
     glUseProgram(progarm);
 
+    const float timeStep = 0.01f; 
+    float time = 0.0f;
+    unsigned int timeLocation = glGetUniformLocation(progarm, "u_time");
+    
     while (!glfwWindowShouldClose(window)) {
+        glUniform1f(timeLocation, time);
+
         glClear(GL_COLOR_BUFFER_BIT);
         glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, nullptr);
 
         glfwSwapBuffers(window);
 
+        time += timeStep;
         glfwPollEvents();
     }
 
