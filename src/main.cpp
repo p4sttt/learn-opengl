@@ -31,19 +31,34 @@ int main() {
         return -1;
     }
 
-    float vertexies[] = {
-        -1.0f, -1.0f, 0.0f,
-        -1.0f, 1.0f, 0.0f,
-        1.0f,  1.0f, 0.0f
+    // vertexies buffer object
+    float positions[] = {
+        0.3f, -0.3f,
+        0.9f, 0.0f,
+        0.1f, 0.1f,
+        -0.4f, -0.5f,
+        -0.1f, 0.3f,
+        -0.8f, 0.0f
     };
-
-    unsigned int buffer;
-    glGenBuffers(1, &buffer);
-    glBindBuffer(GL_ARRAY_BUFFER, buffer);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertexies), vertexies, GL_STATIC_DRAW);
+    unsigned int VBO;
+    glGenBuffers(1, &VBO);
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(positions), positions, GL_STATIC_DRAW);
 
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 3, 0);
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 2, 0);
+
+    // elements buffer object
+    unsigned int indices[] = {
+        0, 1, 2,
+        2, 0, 3,
+        3, 2, 4,
+        4, 3, 5
+    };
+    unsigned int EBO;
+    glGenBuffers(1, &EBO);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
 
     unsigned int progarm =
         LinkShaderProgram(vertexShaderPath, fragmentShaderPath);
@@ -51,14 +66,15 @@ int main() {
 
     while (!glfwWindowShouldClose(window)) {
         glClear(GL_COLOR_BUFFER_BIT);
-        glDrawArrays(GL_TRIANGLES, 0, 3);
+        glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, nullptr);
 
         glfwSwapBuffers(window);
 
         glfwPollEvents();
     }
 
-    glDeleteBuffers(1, &buffer);
+    glDeleteBuffers(1, &EBO);
+    glDeleteBuffers(1, &VBO);
     glDeleteProgram(progarm);
     glfwTerminate();
     return 0;
