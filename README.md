@@ -4,7 +4,8 @@ Studied Topics:
 
 - [x] Graphical Pipeline Basics
 - [x] GLSL Basics, Vertex/Fragment Shaders
-- [x] Vertex Buffer Object, Vertex Array Object, Element Buffer Objects
+- [x] Vertex Buffer Object, Element Buffer Objects
+- [x] Vertex Array Object
 - [ ] 3D Models
 - [ ] Textures
 
@@ -19,8 +20,15 @@ pass
 
 pass
 
-### Vertex Buffer Object, Vertex Array Object, Element Buffer Objects
+### Vertex Buffer Object
 
+pass
+
+### Element Buffer Objects
+
+pass
+
+### Vertex Array Object
 pass
 
 ## Helpfull links 

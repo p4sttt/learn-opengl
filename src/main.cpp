@@ -35,48 +35,65 @@ int main() {
         return -1;
     }
 
-    // vertexies buffer object
-    float positions[] = {
-        0.3f, -0.3f,
-        0.9f, 0.0f,
-        0.1f, 0.1f,
-        -0.4f, -0.5f,
-        -0.1f, 0.3f,
-        -0.8f, 0.0f
+    // figure coordinates
+    float triangle2d[] = {
+        -0.5f,  0.5f,
+         0.0f,  0.0f,
+        -0.5f, -0.5f
     };
-    unsigned int VBO;
-    glGenBuffers(1, &VBO);
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(positions), positions, GL_STATIC_DRAW);
+    float triangle3d[] = {
+        0.5f,  0.5f, 0.0f,
+        0.0f,  0.0f, 0.0f,
+        0.5f, -0.5f, 0.0f
+    };
 
+    // VBO - vertex buffer object
+    // VAO - vertex array object
+    unsigned int VBO[2], VAO[2];
+
+    glGenBuffers(2, VBO);
+    glGenVertexArrays(2, VAO);
+
+    // settings for first VBO
+    glBindVertexArray(VAO[0]);
+    glBindBuffer(GL_ARRAY_BUFFER, VBO[0]);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(triangle2d), triangle2d,
+                 GL_STATIC_DRAW);
+    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float),
+                          (void *)0);
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 2, 0);
+    glBindVertexArray(0);
 
-    // elements buffer object
-    unsigned int indices[] = {
-        0, 1, 2,
-        2, 0, 3,
-        3, 2, 4,
-        4, 3, 5
-    };
-    unsigned int EBO;
-    glGenBuffers(1, &EBO);
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+    // settings for second VBO
+    glBindVertexArray(VAO[1]);
+    glBindBuffer(GL_ARRAY_BUFFER, VBO[1]);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(triangle3d), triangle3d,
+                 GL_STATIC_DRAW);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float),
+                          (void *)0);
+    glEnableVertexAttribArray(0);
+    glBindVertexArray(0);
 
-    unsigned int progarm =
+    // unbind vertex array object
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
+
+    unsigned int shaderProgram =
         LinkShaderProgram(vertexShaderPath, fragmentShaderPath);
-    glUseProgram(progarm);
+    glUseProgram(shaderProgram);
 
-    const float timeStep = 0.01f; 
+    const float timeStep = 0.01f;
     float time = 0.0f;
-    unsigned int timeLocation = glGetUniformLocation(progarm, "u_time");
-    
+    unsigned int timeLocation = glGetUniformLocation(shaderProgram, "u_time");
+
     while (!glfwWindowShouldClose(window)) {
         glUniform1f(timeLocation, time);
 
         glClear(GL_COLOR_BUFFER_BIT);
-        glDrawElements(GL_TRIANGLES, 12, GL_UNSIGNED_INT, nullptr);
+        glBindVertexArray(VAO[0]);
+        glDrawArrays(GL_TRIANGLES, 0, 3);
+
+        glBindVertexArray(VAO[1]);
+        glDrawArrays(GL_TRIANGLES, 0, 3);
 
         glfwSwapBuffers(window);
 
@@ -84,9 +101,9 @@ int main() {
         glfwPollEvents();
     }
 
-    glDeleteBuffers(1, &EBO);
-    glDeleteBuffers(1, &VBO);
-    glDeleteProgram(progarm);
+    glDeleteVertexArrays(1, VAO);
+    glDeleteBuffers(1, VBO);
+    glDeleteProgram(shaderProgram);
     glfwTerminate();
     return 0;
 }
