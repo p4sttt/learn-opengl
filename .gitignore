@@ -1,3 +1,7 @@
 build/
 .cache/
 .vscode/
+
+include/glad
+include/KHR
+src/glad.c

@@ -31,7 +31,7 @@ pass
 ### Vertex Array Object
 pass
 
-## Helpfull links 
+## Helpful links 
 
 - [Learn OpenGL](https://learopengl.com) --- Website with pretty good guides
 - [The Cherno - OpenGL](https://youtube.com/playlist?list=PLlrATfBNZ98foTJPJ_Ev03o2oq3-GGOS2&si=1YuDsV4fCX2sQfCz) --- Youtube playlist dedicated OpenGL by Cherno
