@@ -1,7 +1,9 @@
+#include "TransformController.hpp"
 #include "Logger.hpp"
 #include <glad/glad.h>
+#include <GLFW/glfw3.h>
+#include <iterator>
 #include "Window.hpp"
-#include <iostream>
 
 Window::Window() {
     LOG_INFO("Starting GLFW context");
@@ -12,7 +14,7 @@ Window::Window() {
         LOG_INFO("GLFW successfully initialized");
     }
 
-    window = glfwCreateWindow(640, 480, "This is GLFW window", NULL, NULL);
+    window = glfwCreateWindow(480, 480, "This is GLFW window", NULL, NULL);
     if (!window) {
         glfwTerminate();
         LOG_ERROR("Failed to create window");
@@ -22,6 +24,9 @@ Window::Window() {
 
     glfwMakeContextCurrent(window);
     glfwSwapInterval(1);
+
+    glfwSetWindowUserPointer(window, this);
+
     glfwSetFramebufferSizeCallback(window, FramebufferSizeCallback);
     glfwSetKeyCallback(window, KeyCallback);
 
@@ -60,9 +65,47 @@ void Window::FramebufferSizeCallback(GLFWwindow *window, int width,
 
 void Window::KeyCallback(GLFWwindow *window, int key, int scancode, int action,
                          int mods) {
-    LOG_INFO("Key pressed: " + std::to_string(key));
+    Window *instance = static_cast<Window *>(glfwGetWindowUserPointer(window));
 
-    if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
+    if (key == GLFW_KEY_Q && action == GLFW_PRESS) {
         glfwSetWindowShouldClose(window, GLFW_TRUE);
+    }
+
+    if (action == GLFW_PRESS || action == GLFW_REPEAT) {
+        double angle = 0.05;
+        switch (key) {
+        case GLFW_KEY_UP:
+            LOG("Rotation up: " +
+                std::to_string(
+                    instance->renderer.GetModels()[0].GetVertices()[2]));
+            TransformController::Rotate(
+                angle, Axis::x,
+                instance->renderer.GetModels()[0].GetVertices());
+            break;
+        case GLFW_KEY_RIGHT:
+            LOG("Rotation right: " +
+                std::to_string(
+                    instance->renderer.GetModels()[0].GetVertices()[0]));
+            TransformController::Rotate(
+                angle, Axis::y,
+                instance->renderer.GetModels()[0].GetVertices());
+            break;
+        case GLFW_KEY_DOWN:
+            LOG("Rotation down: " +
+                std::to_string(
+                    instance->renderer.GetModels()[0].GetVertices()[2]));
+            TransformController::Rotate(
+                -angle, Axis::x,
+                instance->renderer.GetModels()[0].GetVertices());
+            break;
+        case GLFW_KEY_LEFT:
+            LOG("Rotation left: " +
+                std::to_string(
+                    instance->renderer.GetModels()[0].GetVertices()[0]));
+            TransformController::Rotate(
+                -angle, Axis::y,
+                instance->renderer.GetModels()[0].GetVertices());
+            break;
+        }
     }
 }

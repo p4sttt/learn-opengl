@@ -15,7 +15,9 @@ class OpenGLRenderer {
     OpenGLRenderer(const ShaderProgram &shaderProgram);
     ~OpenGLRenderer();
 
-    void addOpenGLModel(const OpenGLModel &model);
+    void AddOpenGLModel(const OpenGLModel &model);
+
+    std::vector<OpenGLModel> &GetModels();
 
     void Render();
 };

@@ -16,8 +16,10 @@ class OpenGLModel {
                 const std::vector<unsigned int> &indices);
     ~OpenGLModel();
 
-    const unsigned int getVertexArray() const;
-    const unsigned int getVerticesCount() const;
+    void UpdateVertices();
+    std::vector<float> &GetVertices();
+    const unsigned int GetVertexArray() const;
+    const unsigned int GetVerticesCount() const;
 };
 
 #endif

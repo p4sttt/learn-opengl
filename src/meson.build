@@ -6,6 +6,7 @@ src_files = [
   'ShaderProgram.cpp',
   'Window.cpp',
   'Logger.cpp',
+  'TransformController.cpp',
   'glad.c',
 ]
 

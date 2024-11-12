@@ -11,18 +11,21 @@ OpenGLRenderer::OpenGLRenderer(const ShaderProgram &shaderProgram) {
 
 OpenGLRenderer::~OpenGLRenderer() {}
 
-void OpenGLRenderer::addOpenGLModel(const OpenGLModel &model) {
-    LOG_INFO("Adding model: " + std::to_string(model.getVertexArray()));
+void OpenGLRenderer::AddOpenGLModel(const OpenGLModel &model) {
+    LOG_INFO("Adding model: " + std::to_string(model.GetVertexArray()));
     models.push_back(model);
 }
+
+std::vector<OpenGLModel> &OpenGLRenderer::GetModels() { return models; }
 
 void OpenGLRenderer::Render() {
     glUniform1f(timeAttribLocation, time);
 
     for (OpenGLModel model : models) {
-        glBindVertexArray(model.getVertexArray());
-        glDrawElements(GL_TRIANGLES, model.getVerticesCount() * 3,
-                       GL_UNSIGNED_INT, nullptr);
+        model.UpdateVertices();
+        glBindVertexArray(model.GetVertexArray());
+        glDrawElements(GL_LINES, model.GetVerticesCount() * 3, GL_UNSIGNED_INT,
+                       nullptr);
     }
 
     time += 0.01;

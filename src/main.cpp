@@ -17,7 +17,7 @@ int main() {
                                      shaderProgram);
 
     OpenGLRenderer renderer(shaderProgram);
-    renderer.addOpenGLModel(openGLModel);
+    renderer.AddOpenGLModel(openGLModel);
 
     window.setRenderer(renderer);
     window.Render();

@@ -47,7 +47,7 @@ void ProjectLoader::loadModel(const std::string &modelPath,
 
     model = OpenGLModel(vertices, indices);
 
-    LOG("Model vertices: " + std::to_string(model.getVerticesCount()));
+    LOG("Model vertices: " + std::to_string(model.GetVerticesCount()));
 }
 
 void ProjectLoader::loadShaderProgram(const std::string &vertexShaderPath,

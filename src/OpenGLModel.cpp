@@ -34,8 +34,17 @@ OpenGLModel::OpenGLModel(const std::vector<float> &vertices,
 
 OpenGLModel::~OpenGLModel() {}
 
-const unsigned int OpenGLModel::getVertexArray() const { return VAO; }
+void OpenGLModel::UpdateVertices() {
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBufferData(GL_ARRAY_BUFFER, vertices.size() * sizeof(float),
+                 vertices.data(), GL_STATIC_DRAW);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+}
 
-const unsigned int OpenGLModel::getVerticesCount() const {
+std::vector<float> &OpenGLModel::GetVertices() { return vertices; }
+
+const unsigned int OpenGLModel::GetVertexArray() const { return VAO; }
+
+const unsigned int OpenGLModel::GetVerticesCount() const {
     return vertices.size();
 }

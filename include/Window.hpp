@@ -20,6 +20,7 @@ class Window {
 
     void setRenderer(OpenGLRenderer &renderer);
 
+    void Update();
     void Render();
 };
 
