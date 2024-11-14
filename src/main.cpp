@@ -1,25 +1,17 @@
 #include "Logger.hpp"
-#include "OpenGLModel.hpp"
-#include "ShaderProgram.hpp"
-#include "OpenGLRenderer.hpp"
+#include "App.hpp"
 #include "ProjectLoader.hpp"
-#include "Window.hpp"
+#include "Graphics.hpp"
 
 int main() {
-    LOG_INFO("Starting program epta");
+    App::Window window = App::Window();
 
-    Window window;
-    OpenGLModel openGLModel;
-    ShaderProgram shaderProgram;
+    ProjectLoader &loader = ProjectLoader::GetInstance();
+    Graphics::Model model = loader.LoadModel();
+    Graphics::ShaderProgram shaderProgram = loader.LoadShaderProgram();
 
-    ProjectLoader::loadModel("res/model.obj", openGLModel);
-    ProjectLoader::loadShaderProgram("res/vertex.glsl", "res/fragment.glsl",
-                                     shaderProgram);
-
-    OpenGLRenderer renderer(shaderProgram);
-    renderer.AddOpenGLModel(openGLModel);
-
-    window.setRenderer(renderer);
+    Graphics::Renderer renderer = Graphics::Renderer(model, shaderProgram);
+    window.SetRenderer(&renderer);
     window.Render();
 
     LOG_INFO("Program was successfully executed");

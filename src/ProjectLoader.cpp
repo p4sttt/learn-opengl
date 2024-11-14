@@ -1,14 +1,56 @@
-#include "Logger.hpp"
+#include <glad/glad.h>
 #include "ProjectLoader.hpp"
+#include "Logger.hpp"
 #include <fstream>
 #include <sstream>
-#include <iostream>
 
-void ProjectLoader::loadModel(const std::string &modelPath,
-                              OpenGLModel &model) {
+ProjectLoader *ProjectLoader::instance = nullptr;
+
+ProjectLoader::ProjectLoader() { LOG_INFO("ProjectLoader was created"); }
+
+ProjectLoader &ProjectLoader::GetInstance() {
+    if (instance == nullptr) {
+        instance = new ProjectLoader();
+    }
+    return *instance;
+}
+
+void ProjectLoader::ParseVertex(const std::string line, Math::Vertex &vertex) {
+    std::stringstream ss(line);
+    std::string vertexType;
+    ss >> vertexType;
+
+    if (vertexType != "v") {
+        LOG_ERROR("Invalid vertex type: " + vertexType);
+        throw std::runtime_error("Invalid vertex type");
+    }
+
+    ss >> vertex.x;
+    ss >> vertex.y;
+    ss >> vertex.z;
+}
+
+void ProjectLoader::ParseIndices(const std::string line,
+                                 std::vector<unsigned int> &indices) {
+    std::stringstream ss(line);
+    std::string indicesType;
+    ss >> indicesType;
+
+    if (indicesType != "f") {
+        LOG_ERROR("Invalid indices type: " + indicesType);
+        throw std::runtime_error("Invalid indices type");
+    }
+
+    unsigned int index;
+    while (ss >> index) {
+        indices.push_back(index);
+    }
+}
+
+Graphics::Model ProjectLoader::LoadModel() {
     LOG_INFO("Starting loading model: " + modelPath);
 
-    std::vector<float> vertices;
+    std::vector<Math::Vertex> vertices;
     std::vector<unsigned int> indices;
 
     std::fstream modelFile(modelPath);
@@ -26,96 +68,79 @@ void ProjectLoader::loadModel(const std::string &modelPath,
 
         if (line.front() == 'v') {
             LOG_INFO("Starting parsing vertex: " + line);
-            std::vector<float> currentVertex;
-            parseVertex(line, currentVertex);
-            LOG("Parsed vertex: " + std::to_string(currentVertex[0]) + ", " +
-                std::to_string(currentVertex[1]) + ", " +
-                std::to_string(currentVertex[2]));
-            vertices.insert(vertices.end(), currentVertex.begin(),
-                            currentVertex.end());
+
+            Math::Vertex currentVertex;
+            ParseVertex(line, currentVertex);
+
+            LOG("Parsed vertex: x=" + std::to_string(currentVertex.x) +
+                ", y=" + std::to_string(currentVertex.y) +
+                ", z=" + std::to_string(currentVertex.z));
+
+            vertices.push_back(currentVertex);
         } else if (line.front() == 'f') {
             LOG_INFO("Starting parsing indices: " + line);
-            parseIndices(line, indices);
-            LOG("First parsed indices: " + std::to_string(indices[0]) + ", " +
-                std::to_string(indices[1]) + ", " + std::to_string(indices[2]));
+            ParseIndices(line, indices);
+            LOG_INFO("Indices has been successfully parsed");
         }
     }
 
-    LOG_INFO("Finished loading model: " + modelPath);
-
+    LOG("Model has been successfully parsed\nVertices count: " +
+        std::to_string(vertices.size()) +
+        ", Indices count: " + std::to_string(indices.size()));
     modelFile.close();
 
-    model = OpenGLModel(vertices, indices);
-
-    LOG("Model vertices: " + std::to_string(model.GetVerticesCount()));
+    return Graphics::Model(GL_LINES, vertices, indices);
 }
 
-void ProjectLoader::loadShaderProgram(const std::string &vertexShaderPath,
-                                      const std::string &fragmentShaderPath,
-                                      ShaderProgram &shaderProgram) {
-    LOG_INFO("Starting loading shader program");
-
-    std::string vertexShaderSource;
-    std::string fragmentShaderSource;
-
-    loadShader(vertexShaderPath, vertexShaderSource);
-    loadShader(fragmentShaderPath, fragmentShaderSource);
-
-    LOG_INFO("Vertex shader source:\n" + vertexShaderSource);
-    LOG_INFO("Fragment shader source: \n" + fragmentShaderSource);
-
-    LOG_INFO("Finished loading shader program");
-
-    shaderProgram = ShaderProgram(vertexShaderSource, fragmentShaderSource);
-}
-
-void ProjectLoader::loadShader(const std::string &vertexShaderPath,
-                               std::string &vertexShaderSource) {
-
-    LOG("Starting Loading shader: " + vertexShaderPath);
+void ProjectLoader::LoadShader(const std::string &shaderPath,
+                               std::string &shaderSource) {
+    LOG("Starting Loading shader: " + shaderPath);
     std::stringstream shader;
-    std::ifstream stream(vertexShaderPath);
+    std::ifstream stream(shaderPath);
 
     std::string line;
     while (std::getline(stream, line)) {
         shader << line << "\n";
     }
 
-    LOG_INFO("Finished loading shader: " + vertexShaderPath);
+    LOG_INFO("Finished loading shader: " + shaderPath);
+    LOG_INFO("Shader source: " + shader.str());
 
-    vertexShaderSource = shader.str();
+    shaderSource = shader.str();
 }
 
-void ProjectLoader::parseVertex(const std::string &line,
-                                std::vector<float> &vertices) {
-    std::stringstream ss(line);
-    std::string vertexType;
-    ss >> vertexType;
+Graphics::ShaderProgram ProjectLoader::LoadShaderProgram() {
+    LOG_INFO("Starting loading shader program");
 
-    if (vertexType != "v") {
-        LOG_ERROR("Invalid vertex type: " + vertexType);
-        throw std::runtime_error("Invalid vertex type");
-    }
+    std::string vertexShaderSource, fragmentShaderSource;
 
-    float vertex;
-    while (ss >> vertex) {
-        vertices.push_back(vertex);
-    }
+    LoadShader(vertexShaderPath, vertexShaderSource);
+    LoadShader(fragmentShaderPath, fragmentShaderSource);
+
+    return Graphics::ShaderProgram(vertexShaderSource, fragmentShaderSource);
 }
 
-void ProjectLoader::parseIndices(const std::string &line,
-                                 std::vector<unsigned int> &indices) {
-    std::stringstream ss(line);
-    std::string indexType;
-    ss >> indexType;
-
-    if (indexType != "f") {
-        LOG_ERROR("Invalid index type: " + indexType);
-        throw std::runtime_error("Invalid index type");
-    }
-
-    unsigned int index;
-    while (ss >> index) {
-        indices.push_back(index);
-    }
+void ProjectLoader::SetVertexShaderPath(const std::string &path) {
+    LOG_INFO("Setting vertex shader path: " + path);
+    vertexShaderPath = path;
 }
+
+void ProjectLoader::SetFragmentShaderPath(const std::string &path) {
+    LOG_INFO("Setting fragment shader path: " + path);
+    fragmentShaderPath = path;
+}
+
+void ProjectLoader::SetModelPath(const std::string &path) {
+    LOG_INFO("Setting model path: " + path);
+    modelPath = path;
+}
+
+const std::string &ProjectLoader::GetVertexShaderPath() const {
+    return vertexShaderPath;
+}
+
+const std::string &ProjectLoader::GetFragmentShaderPath() const {
+    return fragmentShaderPath;
+}
+
+const std::string &ProjectLoader::GetModelPath() const { return modelPath; }

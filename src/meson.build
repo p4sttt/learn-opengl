@@ -1,12 +1,10 @@
 src_files = [
   'main.cpp',
-  'OpenGLModel.cpp',
-  'OpenGLRenderer.cpp',
-  'ProjectLoader.cpp',
-  'ShaderProgram.cpp',
-  'Window.cpp',
+  'App.cpp',
+  'Graphics.cpp',
   'Logger.cpp',
-  'TransformController.cpp',
+  'Math.cpp',
+  'ProjectLoader.cpp',
   'glad.c',
 ]
 

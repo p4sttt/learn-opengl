@@ -1,23 +1,38 @@
-#include "ShaderProgram.hpp"
-#include "OpenGLModel.hpp"
+#include "Graphics.hpp"
+#include <string>
 
 #ifndef PROJECT_LOADER_HPP
 #define PROJECT_LOADER_HPP
 
 class ProjectLoader {
   private:
-    static void parseVertex(const std::string &line,
-                            std::vector<float> &vertices);
-    static void parseIndices(const std::string &line,
-                             std::vector<unsigned int> &indices);
-    static void loadShader(const std::string &vertexShaderPath,
-                           std::string &vertexShaderSource);
+    static ProjectLoader *instance;
+
+    std::string vertexShaderPath = "res/vertex.glsl";
+    std::string fragmentShaderPath = "res/fragment.glsl";
+    std::string modelPath = "res/model.obj";
+
+    ProjectLoader();
+    ProjectLoader(const ProjectLoader &) = delete;
+    ProjectLoader &operator=(const ProjectLoader &) = delete;
+
+    void ParseVertex(const std::string line, Math::Vertex &vertex);
+    void ParseIndices(const std::string line, std::vector<unsigned int> &indices);
+    void LoadShader(const std::string &shaderPath, std::string &shaderSource);
 
   public:
-    static void loadModel(const std::string &modelPath, OpenGLModel &model);
-    static void loadShaderProgram(const std::string &vertexShaderPath,
-                                  const std::string &fragmentShaderPath,
-                                  ShaderProgram &shaderProgram);
+    static ProjectLoader &GetInstance();
+
+    Graphics::Model LoadModel();
+    Graphics::ShaderProgram LoadShaderProgram();
+
+    void SetVertexShaderPath(const std::string &path);
+    void SetFragmentShaderPath(const std::string &path);
+    void SetModelPath(const std::string &path);
+
+    const std::string &GetVertexShaderPath() const;
+    const std::string &GetFragmentShaderPath() const;
+    const std::string &GetModelPath() const;
 };
 
 #endif
