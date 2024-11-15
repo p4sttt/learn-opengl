@@ -7,9 +7,9 @@ class ProjectLoader {
   private:
     static ProjectLoader *instance;
 
-    std::string vertexShaderPath = "res/vertex.glsl";
-    std::string fragmentShaderPath = "res/fragment.glsl";
-    std::string modelPath = "res/model.obj";
+    const char *vertexShaderPath = "res/vertex.glsl";
+    const char *fragmentShaderPath = "res/fragment.glsl";
+    const char *modelPath = "res/model.obj";
 
     ProjectLoader();
     ProjectLoader(const ProjectLoader &) = delete;
@@ -26,11 +26,11 @@ class ProjectLoader {
     Graphics::Model LoadModel();
     Graphics::ShaderProgram LoadShaderProgram();
 
-    void SetVertexShaderPath(const std::string &path);
-    void SetFragmentShaderPath(const std::string &path);
-    void SetModelPath(const std::string &path);
+    void SetVertexShaderPath(const char *path);
+    void SetFragmentShaderPath(const char *path);
+    void SetModelPath(const char *path);
 
-    const std::string &GetVertexShaderPath() const;
-    const std::string &GetFragmentShaderPath() const;
-    const std::string &GetModelPath() const;
+    const char *GetVertexShaderPath() const;
+    const char *GetFragmentShaderPath() const;
+    const char *GetModelPath() const;
 };

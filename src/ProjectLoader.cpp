@@ -116,27 +116,27 @@ Graphics::ShaderProgram ProjectLoader::LoadShaderProgram() {
     return Graphics::ShaderProgram(vertexShaderSource.c_str(), fragmentShaderSource.c_str());
 }
 
-void ProjectLoader::SetVertexShaderPath(const std::string &path) {
+void ProjectLoader::SetVertexShaderPath(const char *path) {
     LOG_INFO << "Setting vertex shader path: " << path << '\n';
     vertexShaderPath = path;
 }
 
-void ProjectLoader::SetFragmentShaderPath(const std::string &path) {
+void ProjectLoader::SetFragmentShaderPath(const char *path) {
     LOG_INFO << "Setting fragment shader path: " << path << '\n';
     fragmentShaderPath = path;
 }
 
-void ProjectLoader::SetModelPath(const std::string &path) {
+void ProjectLoader::SetModelPath(const char *path) {
     LOG_INFO << "Setting model path: " << path << '\n';
     modelPath = path;
 }
 
-const std::string &ProjectLoader::GetVertexShaderPath() const {
+const char *ProjectLoader::GetVertexShaderPath() const {
     return vertexShaderPath;
 }
 
-const std::string &ProjectLoader::GetFragmentShaderPath() const {
+const char *ProjectLoader::GetFragmentShaderPath() const {
     return fragmentShaderPath;
 }
 
-const std::string &ProjectLoader::GetModelPath() const { return modelPath; }
+const char *ProjectLoader::GetModelPath() const { return modelPath; }
