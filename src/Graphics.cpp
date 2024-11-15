@@ -4,14 +4,13 @@
 #include <iostream>
 
 Graphics::Buffer::Buffer() : type(0) {
-    LOG_INFO("Create empty buffer");
+    LOG_INFO << "Create empty buffer" << '\n';
     glGenBuffers(1, &id);
 }
 
 Graphics::Buffer::Buffer(const void *data, unsigned int size, unsigned int type)
     : type(type) {
-    LOG_INFO("Creating buffer: " + std::to_string(type) +
-             ", size: " + std::to_string(size));
+    LOG_INFO << "Creating buffer: " << type << ", size: " << size << '\n';
     glGenBuffers(1, &id);
     glBindBuffer(type, id);
     glBufferData(type, size * sizeof(float), data, GL_STATIC_DRAW);
@@ -24,7 +23,7 @@ void Graphics::Buffer::Bind() const { glBindBuffer(type, id); }
 void Graphics::Buffer::Unbind() const { glBindBuffer(type, 0); }
 
 Graphics::VertexArray::VertexArray() {
-    LOG_INFO("Creating vertex array");
+    LOG_INFO << "Creating vertex array" << '\n';
     glGenVertexArrays(1, &id);
 }
 
@@ -58,7 +57,7 @@ unsigned int Graphics::ShaderProgram::CompileShader(unsigned int type,
 
     if (!success) {
         glGetShaderInfoLog(shader, 512, NULL, infoLog);
-        LOG_ERROR("Shader compilation failed: " + std::string(infoLog));
+        LOG_ERROR << "Shader compilation failed: " << infoLog << '\n';
     }
 
     return shader;
@@ -66,7 +65,7 @@ unsigned int Graphics::ShaderProgram::CompileShader(unsigned int type,
 
 Graphics::ShaderProgram::ShaderProgram(const std::string &vertexShaderSource,
                                        const std::string &fragmentShaderSource) {
-    LOG_INFO("Creating shader program");
+    LOG_INFO << "Creating shader program" << '\n';
 
     unsigned int vertexShader = CompileShader(GL_VERTEX_SHADER, vertexShaderSource);
     unsigned int fragmentShader =
@@ -83,10 +82,10 @@ Graphics::ShaderProgram::ShaderProgram(const std::string &vertexShaderSource,
 
     if (!success) {
         glGetProgramInfoLog(id, 512, NULL, infoLog);
-        LOG_ERROR("Shader program linking failed: " + std::string(infoLog));
+        LOG_ERROR << "Shader program linking failed: " << infoLog << '\n';
     }
 
-    LOG_INFO("Shader program created");
+    LOG_INFO << "Shader program created" << '\n';
 
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);
@@ -105,9 +104,8 @@ Graphics::Model::Model(unsigned int renderType,
           GL_ELEMENT_ARRAY_BUFFER),
       vao() {
 
-    LOG_INFO("Creating model: " + std::to_string(renderType) +
-             ", vertices count: " + std::to_string(vertices.size()) +
-             ", indices count: " + std::to_string(indices.size()));
+    LOG_INFO << "Creating model: " << renderType << ", vertices count: "
+             << vertices.size() << ", indices count: " << indices.size();
 
     vao.Bind();
     vao.AddBuffer(vbo, 0);

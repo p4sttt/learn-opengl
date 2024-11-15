@@ -2,51 +2,51 @@
 #include "Logger.hpp"
 
 void App::InitializeGLFW() {
-    LOG_INFO("Initializing GLFW context");
+    LOG_INFO << "Initializing GLFW context" << '\n';
 
     if (!glfwInit()) {
-        LOG_ERROR("Failed to initialize GLFW");
+        LOG_ERROR << "Failed to initialize GLFW" << '\n';
     } else {
-        LOG_INFO("GLFW successfully initialized");
+        LOG_INFO << "GLFW successfully initialized" << '\n';
     }
 }
 
 App::Window::Window() : window(nullptr), renderer(nullptr) {
-    LOG_INFO("Initializing GLFW context");
+    LOG_INFO << "Initializing GLFW context" << '\n';
 
     if (!glfwInit()) {
-        LOG_ERROR("Failed to initialize GLFW");
+        LOG_ERROR << "Failed to initialize GLFW" << '\n';
     } else {
-        LOG_INFO("GLFW successfully initialized");
+        LOG_INFO << "GLFW successfully initialized" << '\n';
     }
 
-    LOG_INFO("Creating window without renderer");
+    LOG_INFO << "Creating window without renderer" << '\n';
 
     window = glfwCreateWindow(480, 480, "This is GLFW window", NULL, NULL);
     if (!window) {
         glfwTerminate();
-        LOG_ERROR("Failed to create window");
+        LOG_ERROR << "Failed to create window" << '\n';
     } else {
-        LOG_INFO("Window successfully created");
+        LOG_INFO << "Window successfully created" << '\n';
     }
 
     glfwMakeContextCurrent(window);
     glfwSwapInterval(1);
 
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress)) {
-        LOG_ERROR("Failed to initialize GLAD");
+        LOG_ERROR << "Failed to initialize GLAD" << '\n';
     } else {
-        LOG_INFO("GLAD successfully initialized");
+        LOG_INFO << "GLAD successfully initialized" << '\n';
     }
 }
 
 App::Window::~Window() {
-    LOG_INFO("Window has been successfully deleted");
+    LOG_INFO << "Window has been successfully deleted" << '\n';
     glfwDestroyWindow(window);
 }
 
 void App::Window::SetRenderer(Graphics::Renderer *renderer) {
-    LOG_INFO("Setting renderer to window");
+    LOG_INFO << "Setting renderer to window" << '\n';
     this->renderer = renderer;
 }
 
@@ -56,7 +56,7 @@ void App::Window::Update() {}
 
 void App::Window::Render() {
     glUseProgram((*renderer).GetShaderProgram().GetId());
-    LOG_INFO("Starting renderer loop");
+    LOG_INFO << "Starting renderer loop" << '\n';
 
     while (!glfwWindowShouldClose(window)) {
         (*renderer).Render();
@@ -79,7 +79,7 @@ void App::EventHandler::KeyCallback(GLFWwindow *window, int key, int scancode,
 }
 
 void App::EventHandler::ErrorCallback(int error, const char *description) {
-    LOG_ERROR("GL ERROR: " + std::to_string(error) + " " + description);
+    LOG_ERROR << "GL ERROR: " << error << " " << description << '\n';
 }
 
 App::EventHandler::EventHandler(Window &window) : window(window) {
@@ -90,7 +90,7 @@ App::EventHandler::EventHandler(Window &window) : window(window) {
 }
 
 App::EventHandler::~EventHandler() {
-    LOG_INFO("Event handler has been successfully deleted");
+    LOG_INFO << "Event handler has been successfully deleted" << '\n';
 }
 
 void App::EventHandler::HandleEvents() { glfwPollEvents(); }

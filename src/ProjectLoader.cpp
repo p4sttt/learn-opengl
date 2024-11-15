@@ -6,7 +6,7 @@
 
 ProjectLoader *ProjectLoader::instance = nullptr;
 
-ProjectLoader::ProjectLoader() { LOG_INFO("ProjectLoader was created"); }
+ProjectLoader::ProjectLoader() { LOG_INFO << "ProjectLoader was created" << '\n'; }
 
 ProjectLoader &ProjectLoader::GetInstance() {
     if (instance == nullptr) {
@@ -21,7 +21,7 @@ void ProjectLoader::ParseVertex(const std::string line, Math::Vertex &vertex) {
     ss >> vertexType;
 
     if (vertexType != "v") {
-        LOG_ERROR("Invalid vertex type: " + vertexType);
+        LOG_ERROR << "Invalid vertex type: " + vertexType << '\n';
         throw std::runtime_error("Invalid vertex type");
     }
 
@@ -37,7 +37,7 @@ void ProjectLoader::ParseIndices(const std::string line,
     ss >> indicesType;
 
     if (indicesType != "f") {
-        LOG_ERROR("Invalid indices type: " + indicesType);
+        LOG_ERROR << "Invalid indices type: " << indicesType << '\n';
         throw std::runtime_error("Invalid indices type");
     }
 
@@ -48,7 +48,7 @@ void ProjectLoader::ParseIndices(const std::string line,
 }
 
 Graphics::Model ProjectLoader::LoadModel() {
-    LOG_INFO("Starting loading model: " + modelPath);
+    LOG_INFO << "Starting loading model: " << modelPath << '\n';
 
     std::vector<Math::Vertex> vertices;
     std::vector<unsigned int> indices;
@@ -56,7 +56,7 @@ Graphics::Model ProjectLoader::LoadModel() {
     std::fstream modelFile(modelPath);
 
     if (!modelFile.is_open()) {
-        LOG_ERROR("Failed to open model file: " + modelPath);
+        LOG_ERROR << "Failed to open model file: " << modelPath << '\n';
         throw std::runtime_error("Failed to open model file");
     }
 
@@ -67,26 +67,24 @@ Graphics::Model ProjectLoader::LoadModel() {
         }
 
         if (line.front() == 'v') {
-            LOG_INFO("Starting parsing vertex: " + line);
+            LOG_INFO << "Starting parsing vertex: " << line << '\n';
 
             Math::Vertex currentVertex;
             ParseVertex(line, currentVertex);
 
-            LOG("Parsed vertex: x=" + std::to_string(currentVertex.x) +
-                ", y=" + std::to_string(currentVertex.y) +
-                ", z=" + std::to_string(currentVertex.z));
+            LOG << "Parsed vertex: x=" << currentVertex.x  << ", y=" << currentVertex.y
+                << ", z=" << currentVertex.z;
 
             vertices.push_back(currentVertex);
         } else if (line.front() == 'f') {
-            LOG_INFO("Starting parsing indices: " + line);
+            LOG_INFO << "Starting parsing indices: " << line << '\n';
             ParseIndices(line, indices);
-            LOG_INFO("Indices has been successfully parsed");
+            LOG_INFO << "Indices has been successfully parsed" << '\n';
         }
     }
 
-    LOG("Model has been successfully parsed\nVertices count: " +
-        std::to_string(vertices.size()) +
-        ", Indices count: " + std::to_string(indices.size()));
+    LOG << "Model has been successfully parsed\nVertices count: " << vertices.size()
+        <<  ", Indices count: " << indices.size();
     modelFile.close();
 
     return Graphics::Model(GL_LINES, vertices, indices);
@@ -94,7 +92,7 @@ Graphics::Model ProjectLoader::LoadModel() {
 
 void ProjectLoader::LoadShader(const std::string &shaderPath,
                                std::string &shaderSource) {
-    LOG("Starting Loading shader: " + shaderPath);
+    LOG << "Starting Loading shader: " << shaderPath << '\n';
     std::stringstream shader;
     std::ifstream stream(shaderPath);
 
@@ -103,14 +101,14 @@ void ProjectLoader::LoadShader(const std::string &shaderPath,
         shader << line << "\n";
     }
 
-    LOG_INFO("Finished loading shader: " + shaderPath);
-    LOG_INFO("Shader source: " + shader.str());
+    LOG_INFO << "Finished loading shader: " << shaderPath << '\n';
+    LOG_INFO << "Shader source: " << shader.str() << '\n';
 
     shaderSource = shader.str();
 }
 
 Graphics::ShaderProgram ProjectLoader::LoadShaderProgram() {
-    LOG_INFO("Starting loading shader program");
+    LOG_INFO << "Starting loading shader program" << '\n';
 
     std::string vertexShaderSource, fragmentShaderSource;
 
@@ -121,17 +119,17 @@ Graphics::ShaderProgram ProjectLoader::LoadShaderProgram() {
 }
 
 void ProjectLoader::SetVertexShaderPath(const std::string &path) {
-    LOG_INFO("Setting vertex shader path: " + path);
+    LOG_INFO << "Setting vertex shader path: " << path << '\n';
     vertexShaderPath = path;
 }
 
 void ProjectLoader::SetFragmentShaderPath(const std::string &path) {
-    LOG_INFO("Setting fragment shader path: " + path);
+    LOG_INFO << "Setting fragment shader path: " << path << '\n';
     fragmentShaderPath = path;
 }
 
 void ProjectLoader::SetModelPath(const std::string &path) {
-    LOG_INFO("Setting model path: " + path);
+    LOG_INFO << "Setting model path: " << path << '\n';
     modelPath = path;
 }
 

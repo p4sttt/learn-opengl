@@ -14,5 +14,5 @@ int main() {
     window.SetRenderer(&renderer);
     window.Render();
 
-    LOG_INFO("Program was successfully executed");
+    LOG_INFO << "Program was successfully executed" << '\n';
 }
