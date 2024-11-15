@@ -38,11 +38,11 @@ class VertexArray {
 class ShaderProgram {
   private:
     unsigned id;
-    unsigned CompileShader(unsigned type, const std::string &source);
+    unsigned CompileShader(unsigned type, const char *source);
 
   public:
-    ShaderProgram(const std::string &vertexShaderSource,
-                  const std::string &fragmentShaderSource);
+    ShaderProgram(const char *vertexShaderSource,
+                  const char *fragmentShaderSource);
     ~ShaderProgram();
 
     unsigned GetId() const;

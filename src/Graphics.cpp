@@ -44,10 +44,9 @@ void Graphics::VertexArray::AddBuffer(const Buffer &buffer, unsigned index) {
     Unbind();
 }
 
-unsigned Graphics::ShaderProgram::CompileShader(unsigned type,
-                                                    const std::string &source) {
+unsigned Graphics::ShaderProgram::CompileShader(unsigned type, const char *source) {
     unsigned shader = glCreateShader(type);
-    const char *src = source.c_str();
+    const char *src = source;
     glShaderSource(shader, 1, &src, NULL);
     glCompileShader(shader);
 
@@ -63,8 +62,8 @@ unsigned Graphics::ShaderProgram::CompileShader(unsigned type,
     return shader;
 }
 
-Graphics::ShaderProgram::ShaderProgram(const std::string &vertexShaderSource,
-                                       const std::string &fragmentShaderSource) {
+Graphics::ShaderProgram::ShaderProgram(const char *vertexShaderSource,
+                                       const char *fragmentShaderSource) {
     LOG_INFO << "Creating shader program" << '\n';
 
     unsigned vertexShader = CompileShader(GL_VERTEX_SHADER, vertexShaderSource);

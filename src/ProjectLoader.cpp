@@ -113,7 +113,7 @@ Graphics::ShaderProgram ProjectLoader::LoadShaderProgram() {
     LoadShader(vertexShaderPath, vertexShaderSource);
     LoadShader(fragmentShaderPath, fragmentShaderSource);
 
-    return Graphics::ShaderProgram(vertexShaderSource, fragmentShaderSource);
+    return Graphics::ShaderProgram(vertexShaderSource.c_str(), fragmentShaderSource.c_str());
 }
 
 void ProjectLoader::SetVertexShaderPath(const std::string &path) {
