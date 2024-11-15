@@ -1,9 +1,8 @@
+#pragma once
+
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 #include "Graphics.hpp"
-
-#ifndef APP_HPP
-#define APP_HPP
 
 namespace App {
 
@@ -43,5 +42,3 @@ class EventHandler {
 };
 
 } // namespace App
-
-#endif

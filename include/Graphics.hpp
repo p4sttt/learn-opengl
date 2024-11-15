@@ -1,9 +1,8 @@
+#pragma once
+
 #include <vector>
 #include <string>
 #include "Math.hpp"
-
-#ifndef GRAPHICS_HPP
-#define GRAPHICS_HPP
 
 namespace Graphics {
 
@@ -91,5 +90,3 @@ class Renderer {
 };
 
 } // namespace Graphics
-
-#endif

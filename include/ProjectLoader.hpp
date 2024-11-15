@@ -1,8 +1,7 @@
+#pragma once
+
 #include "Graphics.hpp"
 #include <string>
-
-#ifndef PROJECT_LOADER_HPP
-#define PROJECT_LOADER_HPP
 
 class ProjectLoader {
   private:
@@ -34,5 +33,3 @@ class ProjectLoader {
     const std::string &GetFragmentShaderPath() const;
     const std::string &GetModelPath() const;
 };
-
-#endif

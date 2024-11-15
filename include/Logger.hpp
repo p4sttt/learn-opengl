@@ -1,7 +1,6 @@
-#include <string>
+#pragma once
 
-#ifndef LOGGER_HPP
-#define LOGGER_HPP
+#include <string>
 
 namespace Logger {
 
@@ -11,8 +10,6 @@ void warn(const std::string &message, const char *file);
 void error(const std::string &message, const char *file);
 
 }; // namespace Logger
-
-#endif
 
 #define LOG(x) Logger::debug(x, __FILE__)
 #define LOG_INFO(x) Logger::info(x, __FILE__)

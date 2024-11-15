@@ -1,7 +1,6 @@
-#include <vector>
+#pragma once
 
-#ifndef MATH_HPP
-#define MATH_HPP
+#include <vector>
 
 namespace Math {
 
@@ -27,5 +26,3 @@ class Matrix {
 class TransformController {};
 
 } // namespace Math
-
-#endif
