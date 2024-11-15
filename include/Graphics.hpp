@@ -69,7 +69,7 @@ class Model {
     Buffer &GetVertexBuffer();
     Buffer &GetElementsBuffer();
     VertexArray &GetVertexArray();
-    const unsigned int &GetRendererType() const;
+    unsigned GetRendererType() const;
 };
 
 class Renderer {

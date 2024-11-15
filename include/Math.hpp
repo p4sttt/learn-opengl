@@ -8,7 +8,7 @@ struct Vertex {
     float x, y, z;
 };
 
-enum Axis { x, y, z };
+enum class Axis { x, y, z };
 
 class Matrix {
   private:

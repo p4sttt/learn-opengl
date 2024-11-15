@@ -136,7 +136,7 @@ Graphics::Buffer &Graphics::Model::GetElementsBuffer() { return ebo; }
 
 Graphics::VertexArray &Graphics::Model::GetVertexArray() { return vao; }
 
-const unsigned int &Graphics::Model::GetRendererType() const { return renderType; }
+unsigned Graphics::Model::GetRendererType() const { return renderType; }
 
 Graphics::Renderer::Renderer(Graphics::Model &model,
                              Graphics::ShaderProgram &shaderProgram)
