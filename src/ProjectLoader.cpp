@@ -25,9 +25,7 @@ void ProjectLoader::ParseVertex(const std::string line, Math::Vertex &vertex) {
         throw std::runtime_error("Invalid vertex type");
     }
 
-    ss >> vertex.x;
-    ss >> vertex.y;
-    ss >> vertex.z;
+    ss >> vertex.x >> vertex.y >> vertex.z;
 }
 
 void ProjectLoader::ParseIndices(const std::string line,

@@ -14,6 +14,7 @@ class ProjectLoader {
     ProjectLoader();
     ProjectLoader(const ProjectLoader &) = delete;
     ProjectLoader &operator=(const ProjectLoader &) = delete;
+    ~ProjectLoader() = default;
 
     void ParseVertex(const std::string line, Math::Vertex &vertex);
     void ParseIndices(const std::string line, std::vector<unsigned int> &indices);
