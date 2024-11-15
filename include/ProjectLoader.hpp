@@ -5,7 +5,7 @@
 
 class ProjectLoader {
   private:
-    static ProjectLoader *instance;
+    static ProjectLoader instance;
 
     const char *vertexShaderPath = "res/vertex.glsl";
     const char *fragmentShaderPath = "res/fragment.glsl";

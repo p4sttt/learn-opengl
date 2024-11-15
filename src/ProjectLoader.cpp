@@ -4,15 +4,12 @@
 #include <fstream>
 #include <sstream>
 
-ProjectLoader *ProjectLoader::instance = nullptr;
+ProjectLoader ProjectLoader::instance;
 
 ProjectLoader::ProjectLoader() { LOG_INFO << "ProjectLoader was created" << '\n'; }
 
 ProjectLoader &ProjectLoader::GetInstance() {
-    if (instance == nullptr) {
-        instance = new ProjectLoader();
-    }
-    return *instance;
+    return instance;
 }
 
 void ProjectLoader::ParseVertex(const std::string line, Math::Vertex &vertex) {
