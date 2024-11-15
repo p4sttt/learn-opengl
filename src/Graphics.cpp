@@ -97,11 +97,10 @@ unsigned Graphics::ShaderProgram::GetId() const { return id; }
 Graphics::Model::Model(unsigned renderType,
                        const std::vector<Math::Vertex> &vertices,
                        const std::vector<unsigned> &indices)
-    : renderType(renderType), vertices(vertices), indices(indices),
+    : renderType(renderType), vertices(vertices), indices(indices), vao(),
       vbo(vertices.data(), vertices.size() * sizeof(Math::Vertex), GL_ARRAY_BUFFER),
       ebo(indices.data(), indices.size() * sizeof(unsigned),
-          GL_ELEMENT_ARRAY_BUFFER),
-      vao() {
+          GL_ELEMENT_ARRAY_BUFFER) {
 
     LOG_INFO << "Creating model: " << renderType << ", vertices count: "
              << vertices.size() << ", indices count: " << indices.size();
