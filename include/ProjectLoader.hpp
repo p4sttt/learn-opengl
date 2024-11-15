@@ -18,7 +18,7 @@ class ProjectLoader {
 
     void ParseVertex(const std::string line, Math::Vertex &vertex);
     void ParseIndices(const std::string line, std::vector<unsigned> &indices);
-    void LoadShader(const std::string &shaderPath, std::string &shaderSource);
+    void LoadShader(const char *shaderPath, std::string &shaderSource);
 
   public:
     static ProjectLoader &GetInstance();

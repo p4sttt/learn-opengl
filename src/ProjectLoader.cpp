@@ -88,7 +88,7 @@ Graphics::Model ProjectLoader::LoadModel() {
     return Graphics::Model(GL_LINES, vertices, indices);
 }
 
-void ProjectLoader::LoadShader(const std::string &shaderPath,
+void ProjectLoader::LoadShader(const char *shaderPath,
                                std::string &shaderSource) {
     LOG << "Starting Loading shader: " << shaderPath << '\n';
     std::stringstream shader;
