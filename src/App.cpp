@@ -55,11 +55,11 @@ GLFWwindow *App::Window::GetGLFWwindow() { return window; }
 void App::Window::Update() {}
 
 void App::Window::Render() {
-    glUseProgram((*renderer).GetShaderProgram().GetId());
+    glUseProgram(renderer->GetShaderProgram().GetId());
     LOG_INFO << "Starting renderer loop" << '\n';
 
     while (!glfwWindowShouldClose(window)) {
-        (*renderer).Render();
+        renderer->Render();
         glfwSwapBuffers(window);
         
         glfwPollEvents();
