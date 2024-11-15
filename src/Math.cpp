@@ -1,7 +1,11 @@
 #include "Math.hpp"
 
-Math::Matrix::Matrix(int rows, int cols) {
-    this->rows = rows;
-    this->cols = cols;
-    data.resize(rows * cols);
+template <int N, int M>
+Math::Matrix<N, M>::Matrix() {
+    data.fill(0.0f);
+}
+
+template<int N, int M, int K>
+Math::Matrix<N, K> operator*(const Math::Matrix<N, M> &left, const Math::Matrix<M, K> &right) {
+    // TODO
 }

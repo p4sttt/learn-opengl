@@ -1,6 +1,6 @@
 #pragma once
 
-#include <vector>
+#include <array>
 
 namespace Math {
 
@@ -10,17 +10,18 @@ struct Vertex {
 
 enum class Axis { x, y, z };
 
+template <int N, int M>
 class Matrix {
   private:
-    std::vector<float> data = {};
-    int rows = 0, cols = 0;
+    std::array<float, N * M> data = {}; 
 
   public:
-    Matrix(int rows, int cols);
-    Matrix operator*(const Matrix &other) const;
-    Matrix operator+(const Matrix &other) const;
+    Matrix();
+    Matrix<N, M> operator+(const Matrix<N, M> &other) const;
     float &operator()(int row, int col);
     const float &operator()(int row, int col) const;
+    template<int N_, int M_, int K>
+    friend Matrix<N_, K> operator*(const Matrix<N_, M_> &left, const Matrix<M_, K> &right);
 };
 
 class TransformController {};
