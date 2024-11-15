@@ -8,7 +8,7 @@ Graphics::Buffer::Buffer() : type(0) {
     glGenBuffers(1, &id);
 }
 
-Graphics::Buffer::Buffer(const void *data, unsigned int size, unsigned int type)
+Graphics::Buffer::Buffer(const void *data, unsigned size, unsigned type)
     : type(type) {
     LOG_INFO << "Creating buffer: " << type << ", size: " << size << '\n';
     glGenBuffers(1, &id);
@@ -33,7 +33,7 @@ void Graphics::VertexArray::Bind() const { glBindVertexArray(id); }
 
 void Graphics::VertexArray::Unbind() const { glBindVertexArray(0); }
 
-void Graphics::VertexArray::AddBuffer(const Buffer &buffer, unsigned int index) {
+void Graphics::VertexArray::AddBuffer(const Buffer &buffer, unsigned index) {
     Bind();
     buffer.Bind();
 
@@ -44,9 +44,9 @@ void Graphics::VertexArray::AddBuffer(const Buffer &buffer, unsigned int index) 
     Unbind();
 }
 
-unsigned int Graphics::ShaderProgram::CompileShader(unsigned int type,
+unsigned Graphics::ShaderProgram::CompileShader(unsigned type,
                                                     const std::string &source) {
-    unsigned int shader = glCreateShader(type);
+    unsigned shader = glCreateShader(type);
     const char *src = source.c_str();
     glShaderSource(shader, 1, &src, NULL);
     glCompileShader(shader);
@@ -67,8 +67,8 @@ Graphics::ShaderProgram::ShaderProgram(const std::string &vertexShaderSource,
                                        const std::string &fragmentShaderSource) {
     LOG_INFO << "Creating shader program" << '\n';
 
-    unsigned int vertexShader = CompileShader(GL_VERTEX_SHADER, vertexShaderSource);
-    unsigned int fragmentShader =
+    unsigned vertexShader = CompileShader(GL_VERTEX_SHADER, vertexShaderSource);
+    unsigned fragmentShader =
         CompileShader(GL_FRAGMENT_SHADER, fragmentShaderSource);
 
     id = glCreateProgram();
@@ -93,14 +93,14 @@ Graphics::ShaderProgram::ShaderProgram(const std::string &vertexShaderSource,
 
 Graphics::ShaderProgram::~ShaderProgram() { glDeleteProgram(id); }
 
-unsigned int Graphics::ShaderProgram::GetId() const { return id; }
+unsigned Graphics::ShaderProgram::GetId() const { return id; }
 
-Graphics::Model::Model(unsigned int renderType,
+Graphics::Model::Model(unsigned renderType,
                        const std::vector<Math::Vertex> &vertices,
-                       const std::vector<unsigned int> &indices)
+                       const std::vector<unsigned> &indices)
     : renderType(renderType), vertices(vertices), indices(indices),
       vbo(vertices.data(), vertices.size() * sizeof(Math::Vertex), GL_ARRAY_BUFFER),
-      ebo(indices.data(), indices.size() * sizeof(unsigned int),
+      ebo(indices.data(), indices.size() * sizeof(unsigned),
           GL_ELEMENT_ARRAY_BUFFER),
       vao() {
 
@@ -153,7 +153,7 @@ Graphics::ShaderProgram &Graphics::Renderer::GetShaderProgram() {
 void Graphics::Renderer::Render() {
     glClear(GL_COLOR_BUFFER_BIT);
 
-    unsigned int uniformTimeLocation =
+    unsigned uniformTimeLocation =
         glGetUniformLocation(shaderProgram.GetId(), "u_time");
     glUniform1f(uniformTimeLocation, time);
 

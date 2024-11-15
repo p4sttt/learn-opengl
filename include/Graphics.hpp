@@ -8,23 +8,23 @@ namespace Graphics {
 
 class Buffer {
   private:
-    unsigned int id;
-    unsigned int type;
+    unsigned id;
+    unsigned type;
 
   public:
     Buffer();
-    Buffer(const void *data, unsigned int size, unsigned int type);
+    Buffer(const void *data, unsigned size, unsigned type);
     ~Buffer();
 
     void Bind() const;
     void Unbind() const;
 
-    unsigned int GetId() const { return id; }
+    unsigned GetId() const { return id; }
 };
 
 class VertexArray {
   private:
-    unsigned int id;
+    unsigned id;
 
   public:
     VertexArray();
@@ -32,34 +32,34 @@ class VertexArray {
 
     void Bind() const;
     void Unbind() const;
-    void AddBuffer(const Buffer &buffer, unsigned int index);
+    void AddBuffer(const Buffer &buffer, unsigned index);
 };
 
 class ShaderProgram {
   private:
-    unsigned int id;
-    unsigned int CompileShader(unsigned int type, const std::string &source);
+    unsigned id;
+    unsigned CompileShader(unsigned type, const std::string &source);
 
   public:
     ShaderProgram(const std::string &vertexShaderSource,
                   const std::string &fragmentShaderSource);
     ~ShaderProgram();
 
-    unsigned int GetId() const;
+    unsigned GetId() const;
 };
 
 class Model {
   private:
-    unsigned int renderType;
+    unsigned renderType;
     std::vector<Math::Vertex> vertices;
-    std::vector<unsigned int> indices;
+    std::vector<unsigned> indices;
 
     VertexArray vao;
     Buffer vbo, ebo;
 
   public:
-    Model(unsigned int mode, const std::vector<Math::Vertex> &vertices,
-          const std::vector<unsigned int> &indices);
+    Model(unsigned mode, const std::vector<Math::Vertex> &vertices,
+          const std::vector<unsigned> &indices);
     ~Model();
 
     void UpdateVertices();

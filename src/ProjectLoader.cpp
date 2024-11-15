@@ -29,7 +29,7 @@ void ProjectLoader::ParseVertex(const std::string line, Math::Vertex &vertex) {
 }
 
 void ProjectLoader::ParseIndices(const std::string line,
-                                 std::vector<unsigned int> &indices) {
+                                 std::vector<unsigned> &indices) {
     std::stringstream ss(line);
     std::string indicesType;
     ss >> indicesType;
@@ -39,7 +39,7 @@ void ProjectLoader::ParseIndices(const std::string line,
         throw std::runtime_error("Invalid indices type");
     }
 
-    unsigned int index;
+    unsigned index;
     while (ss >> index) {
         indices.push_back(index);
     }
@@ -49,7 +49,7 @@ Graphics::Model ProjectLoader::LoadModel() {
     LOG_INFO << "Starting loading model: " << modelPath << '\n';
 
     std::vector<Math::Vertex> vertices;
-    std::vector<unsigned int> indices;
+    std::vector<unsigned> indices;
 
     std::fstream modelFile(modelPath);
 

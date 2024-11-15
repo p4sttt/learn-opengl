@@ -17,7 +17,7 @@ class ProjectLoader {
     ~ProjectLoader() = default;
 
     void ParseVertex(const std::string line, Math::Vertex &vertex);
-    void ParseIndices(const std::string line, std::vector<unsigned int> &indices);
+    void ParseIndices(const std::string line, std::vector<unsigned> &indices);
     void LoadShader(const std::string &shaderPath, std::string &shaderSource);
 
   public:
